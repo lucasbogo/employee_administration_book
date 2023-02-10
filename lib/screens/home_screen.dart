@@ -8,6 +8,21 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Controle de Funcionários'),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        tooltip: 'Adicionar Funcionário',
+        onPressed: () {
+          Navigator.pushNamed(context, '/add_employee');
+        },
+      ),
+    );
   }
 }
