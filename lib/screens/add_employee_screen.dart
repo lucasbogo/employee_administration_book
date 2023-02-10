@@ -11,6 +11,8 @@ class AddEmployeeScreen extends StatefulWidget {
 }
 
 class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
+  TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,15 +30,20 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
       ),
       body: Column(children: [
         TextFormField(
-          controller: ,
+          controller: _controller,
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             labelText: 'Nome',
             hintText: 'Digite o nome do funcionário',
           ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor, digite o nome do funcionário';
+            }
+          },
         ),
         TextFormField(
-          controller: ,
+          controller: _controller,
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             labelText: 'Sobrenome',
@@ -44,7 +51,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           ),
         ),
         TextFormField(
-          controller: ,
+          controller: _controller,
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             labelText: 'Cargo',
@@ -52,7 +59,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           ),
         ),
         TextFormField(
-          controller: ,
+          controller: _controller,
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             labelText: 'Salário',
@@ -60,7 +67,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           ),
         ),
         TextFormField(
-          controller: ,
+          controller: _controller,
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             labelText: 'Data de Nascimento',
@@ -68,7 +75,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           ),
         ),
         TextFormField(
-          controller: ,
+          controller: _controller,
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             labelText: 'Data de Admissão',
@@ -76,7 +83,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           ),
         ),
         TextFormField(
-          controller: ,
+          controller: _controller,
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             labelText: 'Data de Demissão',
@@ -84,7 +91,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           ),
         ),
         TextFormField(
-          controller: ,
+          controller: _controller,
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             labelText: 'CPF',
@@ -92,7 +99,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           ),
         ),
         TextFormField(
-          controller: ,
+          controller: _controller,
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             labelText: 'RG',
@@ -100,7 +107,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           ),
         ),
         TextFormField(
-          controller: ,
+          controller: _controller,
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             labelText: 'Endereço',
@@ -108,7 +115,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           ),
         ),
         TextFormField(
-          controller: ,
+          controller: _controller,
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             labelText: 'Telefone',
@@ -116,7 +123,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           ),
         ),
         TextFormField(
-          controller: ,
+          controller: _controller,
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             labelText: 'E-mail',
@@ -128,7 +135,6 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         onPressed: () {},
         child: const Icon(Icons.add),
       ),
-
-    );  
+    );
   }
 }
