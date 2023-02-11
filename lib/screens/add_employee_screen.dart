@@ -1,7 +1,9 @@
+import 'package:employee_book/widgets/custom_date_picker_form_field.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../widgets/custom_text_form_field.dart';
 
@@ -20,6 +22,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
+  DateTime? _dateOfBirth;
 
   @override
   void dispose() {
@@ -81,24 +84,12 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                   const SizedBox(
                     height: 8.0,
                   ),
-                  TextFormField(
-                    controller: _dateOfBirthController,
-                    keyboardType: TextInputType.datetime,
-                    decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        label: const Text('Data de Nascimento'),
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.calendar_today),
-                          onPressed: () => pickDateOfBirth(context),
-                        )),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Data de nascimento não pode ser vazio';
-                      }
-                      return null;
-                    },
-                    onTap: () => pickDateOfBirth(context),
-                  ),
+                  CustomDatePickerFormField(
+                      controller: _dateOfBirthController,
+                      txtLable: 'Data de Nascimento',
+                      callback: () {
+                        pickDateOfBirth(context);
+                      })
                 ],
               ),
             ),
@@ -112,7 +103,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
     final initialDate = DateTime.now();
     final newDate = await showDatePicker(
         context: context,
-        initialDate: initialDate,
+        initialDate: _dateOfBirth ?? initialDate,
         firstDate: DateTime(1900),
         lastDate: DateTime(2100));
     builder:
@@ -129,7 +120,9 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         child: child ?? const Text(''));
     if (newDate == null) return;
     setState(() {
-      _dateOfBirthController.text = newDate.toIso8601String();
+      _dateOfBirth = newDate;
+      String dob = DateFormat('dd/MM/yyyy').format(newDate);
+      _dateOfBirthController.text = dob;
     });
   }
 }
