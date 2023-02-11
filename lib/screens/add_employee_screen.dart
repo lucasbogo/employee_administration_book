@@ -15,7 +15,6 @@ class AddEmployeeScreen extends StatefulWidget {
 class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -24,7 +23,6 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
 
   @override
   void dispose() {
-    _userNameController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();
@@ -56,22 +54,15 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
               child: Column(
                 children: [
                   CustomTextFormField(
-                    controller: _userNameController,
-                    txtLable: 'User Name',
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  CustomTextFormField(
                     controller: _firstNameController,
-                    txtLable: 'First Name',
+                    txtLable: 'Nome',
                   ),
                   const SizedBox(
                     height: 8.0,
                   ),
                   CustomTextFormField(
                     controller: _lastNameController,
-                    txtLable: 'Last Name',
+                    txtLable: 'Sobrenome',
                   ),
                   const SizedBox(
                     height: 8.0,
