@@ -34,6 +34,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
 
   @override
   void dispose() {
+    _db.close();
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();
@@ -61,12 +62,19 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 _db.insertEmployee(entity).then((value) =>
                     ScaffoldMessenger.of(context)
                         .showMaterialBanner(MaterialBanner(
-                      content: const Text('Funcionário adicionado com sucesso'),
+                      backgroundColor: Colors.green,
+                      content: const Text(
+                        'Funcionário adicionado com sucesso',
+                        style: TextStyle(color: Colors.white),
+                      ),
                       actions: [
                         TextButton(
                             onPressed: () => ScaffoldMessenger.of(context)
                                 .hideCurrentMaterialBanner(),
-                            child: const Text('Fechar'))
+                            child: const Text(
+                              'Fechar',
+                              style: TextStyle(color: Colors.white),
+                            ))
                       ],
                     )));
               },
