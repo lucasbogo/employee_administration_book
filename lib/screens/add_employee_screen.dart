@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' as drift;
 import 'package:employee_book/widgets/custom_date_picker_form_field.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../data/local/db/app_db.dart';
 import '../widgets/custom_text_form_field.dart';
 
 class AddEmployeeScreen extends StatefulWidget {
@@ -16,13 +18,19 @@ class AddEmployeeScreen extends StatefulWidget {
 
 class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   final _formKey = GlobalKey<FormState>();
-
+  late AppDb _db;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
   DateTime? _dateOfBirth;
+
+  @override
+  void initState() {
+    super.initState();
+    _db = AppDb();
+  }
 
   @override
   void dispose() {
@@ -43,7 +51,24 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                // TODO: Save Employee
+                final entity = EmployeeCompanion(
+                  firstName: drift.Value(_firstNameController.text),
+                  lastName: drift.Value(_lastNameController.text),
+                  email: drift.Value(_emailController.text),
+                  phone: drift.Value(_phoneController.text),
+                  dateOfBirth: drift.Value(_dateOfBirth!),
+                );
+                _db.insertEmployee(entity).then((value) =>
+                    ScaffoldMessenger.of(context)
+                        .showMaterialBanner(MaterialBanner(
+                      content: const Text('Funcionário adicionado com sucesso'),
+                      actions: [
+                        TextButton(
+                            onPressed: () => ScaffoldMessenger.of(context)
+                                .hideCurrentMaterialBanner(),
+                            child: const Text('Fechar'))
+                      ],
+                    )));
               },
               icon: const Icon(Icons.save))
         ],
