@@ -90,12 +90,23 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                   const SizedBox(
                     height: 8.0,
                   ),
-                  CustomTextFormField(
+                  TextFormField(
                     controller: _dateOfBirthController,
-                    txtLable: 'Date of Birth',
-                  ),
-                  const SizedBox(
-                    height: 8.0,
+                    keyboardType: TextInputType.datetime,
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        label: const Text('Data de Nascimento'),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.calendar_today),
+                          onPressed: () => pickDateOfBirth(context),
+                        )),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Data de nascimento não pode ser vazio';
+                      }
+                      return null;
+                    },
+                    onTap: () => pickDateOfBirth(context),
                   ),
                 ],
               ),
@@ -113,7 +124,21 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         initialDate: initialDate,
         firstDate: DateTime(1900),
         lastDate: DateTime(2100));
+    builder:
+    (context, child) => Theme(
+        data: ThemeData.light().copyWith(
+          colorScheme: ColorScheme.light(
+            primary: Colors.blue,
+            onPrimary: Colors.white,
+            surface: Colors.blue,
+            onSurface: Colors.black,
+          ),
+          dialogBackgroundColor: Colors.white,
+        ),
+        child: child ?? const Text(''));
     if (newDate == null) return;
-    _dateOfBirthController.text = newDate.toString();
+    setState(() {
+      _dateOfBirthController.text = newDate.toIso8601String();
+    });
   }
 }
