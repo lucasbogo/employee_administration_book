@@ -52,31 +52,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                final entity = EmployeeCompanion(
-                  firstName: drift.Value(_firstNameController.text),
-                  lastName: drift.Value(_lastNameController.text),
-                  email: drift.Value(_emailController.text),
-                  phone: drift.Value(_phoneController.text),
-                  dateOfBirth: drift.Value(_dateOfBirth!),
-                );
-                _db.insertEmployee(entity).then((value) =>
-                    ScaffoldMessenger.of(context)
-                        .showMaterialBanner(MaterialBanner(
-                      backgroundColor: Colors.green,
-                      content: const Text(
-                        'Funcionário adicionado com sucesso',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      actions: [
-                        TextButton(
-                            onPressed: () => ScaffoldMessenger.of(context)
-                                .hideCurrentMaterialBanner(),
-                            child: const Text(
-                              'Fechar',
-                              style: TextStyle(color: Colors.white),
-                            ))
-                      ],
-                    )));
+                addEmployee();
               },
               icon: const Icon(Icons.save))
         ],
@@ -157,5 +133,32 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
       String dob = DateFormat('dd/MM/yyyy').format(newDate);
       _dateOfBirthController.text = dob;
     });
+  }
+
+  void addEmployee() {
+    final entity = EmployeeCompanion(
+      firstName: drift.Value(_firstNameController.text),
+      lastName: drift.Value(_lastNameController.text),
+      email: drift.Value(_emailController.text),
+      phone: drift.Value(_phoneController.text),
+      dateOfBirth: drift.Value(_dateOfBirth!),
+    );
+    _db.insertEmployee(entity).then((value) =>
+        ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+          backgroundColor: Colors.green,
+          content: const Text(
+            'Funcionário adicionado com sucesso',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () =>
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+                child: const Text(
+                  'Fechar',
+                  style: TextStyle(color: Colors.white),
+                ))
+          ],
+        )));
   }
 }
