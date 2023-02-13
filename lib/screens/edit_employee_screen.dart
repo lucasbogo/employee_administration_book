@@ -58,7 +58,12 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
               onPressed: () {
                 editEmployee();
               },
-              icon: const Icon(Icons.save))
+              icon: const Icon(Icons.save)),
+          IconButton(
+              onPressed: () {
+                deleteEmployee();
+              },
+              icon: const Icon(Icons.delete))
         ],
       ),
       body: Padding(
@@ -153,6 +158,26 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
           backgroundColor: Colors.green,
           content: const Text(
             'Funcionário atualizado com sucesso',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () =>
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+                child: const Text(
+                  'Fechar',
+                  style: TextStyle(color: Colors.white),
+                ))
+          ],
+        )));
+  }
+
+  void deleteEmployee() {
+    _db.deleteEmployee(widget.id).then((value) =>
+        ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+          backgroundColor: Colors.red,
+          content: const Text(
+            'Funcionário excluído com sucesso',
             style: TextStyle(color: Colors.white),
           ),
           actions: [
