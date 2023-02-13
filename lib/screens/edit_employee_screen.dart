@@ -20,8 +20,7 @@ class EditEmployeeScreen extends StatefulWidget {
 class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   final _formKey = GlobalKey<FormState>();
   late AppDb _db;
-
-  //late EmployeeData _employee;
+  late EmployeeData _employeeData;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -32,7 +31,9 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   @override
   void initState() {
     super.initState();
+
     _db = AppDb();
+    getEmployee();
   }
 
   @override
@@ -163,5 +164,15 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                 ))
           ],
         )));
+  }
+
+  Future<void> getEmployee() async {
+    _employeeData = await _db.getEmployee(widget.id);
+    _firstNameController.text = _employeeData.firstName;
+    _lastNameController.text = _employeeData.lastName;
+    _emailController.text = _employeeData.email;
+    _phoneController.text = _employeeData.phone;
+    _dateOfBirthController.text = DateFormat('dd/MM/yyyy')
+        .format(DateTime.parse(_employeeData.dateOfBirth as String));
   }
 }

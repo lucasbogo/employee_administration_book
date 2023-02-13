@@ -5,9 +5,8 @@ import 'package:employee_book/screens/add_employee_screen.dart';
 import 'package:employee_book/screens/edit_employee_screen.dart';
 
 class RouteGenerator {
-  final args = settings.arguments;
-
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    final args = settings.arguments;
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => HomeScreen());
