@@ -56,7 +56,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                addEmployee();
+                editEmployee();
               },
               icon: const Icon(Icons.save))
         ],
@@ -139,7 +139,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     });
   }
 
-  void addEmployee() {
+  void editEmployee() {
     final entity = EmployeeCompanion(
       firstName: drift.Value(_firstNameController.text),
       lastName: drift.Value(_lastNameController.text),
@@ -172,7 +172,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     _lastNameController.text = _employeeData.lastName;
     _emailController.text = _employeeData.email;
     _phoneController.text = _employeeData.phone;
-    _dateOfBirthController.text = DateFormat('dd/MM/yyyy')
-        .format(DateTime.parse(_employeeData.dateOfBirth as String));
+    _dateOfBirthController.text =
+        _employeeData.dateOfBirth.toLocal().toString();
   }
 }

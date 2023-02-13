@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     final employee = employees[index];
                     return GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, '/edit',
+                        Navigator.pushNamed(context, '/edit_employee',
                             arguments: employee.id);
                       },
                       child: Card(
