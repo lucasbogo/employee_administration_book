@@ -56,8 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
               index = value;
             });
           },
-          backgroundColor: Color.fromARGB(255, 14, 199, 199),
-          selectedItemColor: Color.fromARGB(255, 13, 138, 21),
+          backgroundColor: Colors.blue,
+          selectedItemColor: Colors.black,
           unselectedItemColor: Color.fromARGB(255, 255, 255, 255),
           showSelectedLabels: false,
           showUnselectedLabels: true,
