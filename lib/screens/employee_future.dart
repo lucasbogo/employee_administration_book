@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
@@ -32,12 +31,8 @@ class _EmployeeFutureScreenState extends State<EmployeeFutureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Funcionários'),
-        centerTitle: true,
-      ),
       body: FutureBuilder<List<EmployeeData>>(
-          future: _db.getEmployee(),
+          future: _db.getEmployees(),
           builder: (context, snapshot) {
             final List<EmployeeData>? employees = snapshot.data;
 
