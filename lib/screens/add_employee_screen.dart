@@ -47,7 +47,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Employee'),
+        title: const Text('Adicionar Funcionário'),
         centerTitle: true,
         actions: [
           IconButton(

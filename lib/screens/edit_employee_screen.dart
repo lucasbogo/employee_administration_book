@@ -50,7 +50,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Employee'),
+        title: const Text('Editar Funcionário'),
         centerTitle: true,
         actions: [
           IconButton(
