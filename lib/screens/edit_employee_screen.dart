@@ -141,17 +141,18 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
 
   void editEmployee() {
     final entity = EmployeeCompanion(
+      id: drift.Value(widget.id),
       firstName: drift.Value(_firstNameController.text),
       lastName: drift.Value(_lastNameController.text),
       email: drift.Value(_emailController.text),
       phone: drift.Value(_phoneController.text),
       dateOfBirth: drift.Value(_dateOfBirth!),
     );
-    _db.insertEmployee(entity).then((value) =>
+    _db.updateEmployee(entity).then((value) =>
         ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
           backgroundColor: Colors.green,
           content: const Text(
-            'Funcionário adicionado com sucesso',
+            'Funcionário atualizado com sucesso',
             style: TextStyle(color: Colors.white),
           ),
           actions: [
