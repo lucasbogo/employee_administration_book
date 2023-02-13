@@ -54,26 +54,33 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: employees.length,
                   itemBuilder: (context, index) {
                     final employee = employees[index];
-                    return Card(
-                      color: Colors.grey[200],
-                      shape: const RoundedRectangleBorder(
-                        side: BorderSide(
-                            color: Color.fromARGB(179, 55, 201, 193), width: 1),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(employee.id.toString()),
-                            Text(employee.firstName.toString()),
-                            Text(employee.lastName.toString()),
-                            Text(employee.email.toString()),
-                            Text(employee.phone.toString()),
-                            Text(employee.dateOfBirth.toString()),
-                          ],
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/edit',
+                            arguments: employee.id);
+                      },
+                      child: Card(
+                        color: Colors.grey[200],
+                        shape: const RoundedRectangleBorder(
+                          side: BorderSide(
+                              color: Color.fromARGB(179, 55, 201, 193),
+                              width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(employee.id.toString()),
+                              Text(employee.firstName.toString()),
+                              Text(employee.lastName.toString()),
+                              Text(employee.email.toString()),
+                              Text(employee.phone.toString()),
+                              Text(employee.dateOfBirth.toString()),
+                            ],
+                          ),
                         ),
                       ),
                     );
