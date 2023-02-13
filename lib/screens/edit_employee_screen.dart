@@ -145,31 +145,35 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   }
 
   void editEmployee() {
-    final entity = EmployeeCompanion(
-      id: drift.Value(widget.id),
-      firstName: drift.Value(_firstNameController.text),
-      lastName: drift.Value(_lastNameController.text),
-      email: drift.Value(_emailController.text),
-      phone: drift.Value(_phoneController.text),
-      dateOfBirth: drift.Value(_dateOfBirth!),
-    );
-    _db.updateEmployee(entity).then((value) =>
-        ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
-          backgroundColor: Colors.green,
-          content: const Text(
-            'Funcionário atualizado com sucesso',
-            style: TextStyle(color: Colors.white),
-          ),
-          actions: [
-            TextButton(
-                onPressed: () =>
-                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-                child: const Text(
-                  'Fechar',
-                  style: TextStyle(color: Colors.white),
-                ))
-          ],
-        )));
+    final isValid = _formKey.currentState?.validate();
+
+    if (isValid != null && isValid) {
+      final entity = EmployeeCompanion(
+        id: drift.Value(widget.id),
+        firstName: drift.Value(_firstNameController.text),
+        lastName: drift.Value(_lastNameController.text),
+        email: drift.Value(_emailController.text),
+        phone: drift.Value(_phoneController.text),
+        dateOfBirth: drift.Value(_dateOfBirth!),
+      );
+      _db.updateEmployee(entity).then((value) =>
+          ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+            backgroundColor: Colors.green,
+            content: const Text(
+              'Funcionário atualizado com sucesso',
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () =>
+                      ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+                  child: const Text(
+                    'Fechar',
+                    style: TextStyle(color: Colors.white),
+                  ))
+            ],
+          )));
+    }
   }
 
   void deleteEmployee() {
