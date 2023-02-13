@@ -26,8 +26,12 @@ class AppDb extends _$AppDb {
   int get schemaVersion => 1;
 
   // Buscar a lista de empregados
-  Future<List<EmployeeData>> getEmployees() async {
+  Future<List<EmployeeData>> getEmployeesStream() async {
     return await select(employee).get();
+  }
+
+  Stream<List<EmployeeData>> watchEmployees() {
+    return select(employee).watch();
   }
 
   // Buscar um empregado pelo id
