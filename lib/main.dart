@@ -16,11 +16,6 @@ void main() {
           ..init(db)
           ..getEmployeeFuture(),
       ),
-      //ChangeNotifierProxyProvider<AppDb, EmployeeAddressChangeNotifier>(
-      //  create: (context) => EmployeeAddressChangeNotifier(),
-      //  update: (context, appDb, notifier) => notifier!..initAppDb(appDb),
-      //  lazy: true,
-      //)
     ],
     child: const MyApp(),
   ));
