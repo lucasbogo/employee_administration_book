@@ -178,7 +178,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   }
 
   void deleteEmployee() {
-    _db.deleteEmployee(widget.id).then((value) =>
+    Provider.of<AppDb>(context).deleteEmployee(widget.id).then((value) =>
         ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
           backgroundColor: Colors.red,
           content: const Text(
@@ -198,7 +198,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   }
 
   Future<void> getEmployee() async {
-    _employeeData = await _db.getEmployee(widget.id);
+    _employeeData = await Provider.of<AppDb>(context).getEmployee(widget.id);
     _firstNameController.text = _employeeData.firstName;
     _lastNameController.text = _employeeData.lastName;
     _emailController.text = _employeeData.email;
