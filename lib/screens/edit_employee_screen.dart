@@ -35,6 +35,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     super.initState();
     _employeeChangeNotifier =
         Provider.of<EmployeeChangeNotifier>(context, listen: false);
+    _employeeChangeNotifier.addListener(providerListener); // added listener
 
     // _db = AppDb(); // created singleton in main.dart. no need to create here
     // getEmployee();
@@ -169,6 +170,14 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
 
   void deleteEmployee() {
     context.read<EmployeeChangeNotifier>().deleteEmployee(widget.id);
+  }
+
+  void providerListener() {
+    if (_employeeChangeNotifier.isUpdated) {
+      listenUpdateProvider();
+    } else if (_employeeChangeNotifier.isDeleted) {
+      listenDeleteProvider();
+    }
   }
 
   void listenDeleteProvider() {

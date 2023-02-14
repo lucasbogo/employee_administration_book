@@ -57,7 +57,6 @@ class EmployeeChangeNotifier extends ChangeNotifier {
   void getEmployee(int id) {
     _appDb?.getEmployee(id).then((value) {
       _employeeData = value;
-      setIsActive(value.isActive == 1 ? true : false);
       notifyListeners();
     }).onError((error, stackTrace) {
       _error = error.toString();

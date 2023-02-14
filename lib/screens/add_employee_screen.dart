@@ -27,10 +27,15 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
   DateTime? _dateOfBirth;
+  late EmployeeChangeNotifier _employeeChangeNotifier;
 
   @override
   void initState() {
     super.initState();
+    _employeeChangeNotifier =
+        Provider.of<EmployeeChangeNotifier>(context, listen: false);
+    _employeeChangeNotifier.addListener(providerListener); // added listener
+
     // _db = AppDb(); // created singleton in main.dart. no need to create here
   }
 
@@ -158,21 +163,23 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   }
 
   void providerListener() {
-    ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
-      backgroundColor: Colors.green,
-      content: const Text(
-        'Funcionário adicionado com sucesso',
-        style: TextStyle(color: Colors.white),
-      ),
-      actions: [
-        TextButton(
-            onPressed: () =>
-                ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-            child: const Text(
-              'Fechar',
-              style: TextStyle(color: Colors.white),
-            ))
-      ],
-    ));
+    if (_employeeChangeNotifier.isAdded) {
+      ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+        backgroundColor: Colors.green,
+        content: const Text(
+          'Funcionário adicionado com sucesso',
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () =>
+                  ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+              child: const Text(
+                'Fechar',
+                style: TextStyle(color: Colors.white),
+              ))
+        ],
+      ));
+    }
   }
 }
