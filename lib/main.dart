@@ -10,6 +10,7 @@ void main() {
       create: (context) =>
           AppDb(), // Singleton to connect to database only once
       child: MyApp(),
+      dispose: (context, AppDb db) => db.close(),
     ),
   );
 }

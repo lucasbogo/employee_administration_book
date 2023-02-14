@@ -2,6 +2,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../data/local/db/app_db.dart';
 
@@ -13,18 +14,18 @@ class EmployeeFutureScreen extends StatefulWidget {
 }
 
 class _EmployeeFutureScreenState extends State<EmployeeFutureScreen> {
-  late AppDb _db;
+  // late AppDb _db; // created singleton in main.dart. no need to create here
 
   @override
   void initState() {
     super.initState();
 
-    _db = AppDb();
+    //_db = AppDb(); // created singleton in main.dart. no need to create here
   }
 
   @override
   void dispose() {
-    _db.close();
+    //  _db.close(); // created singleton in main.dart. no need to create here
     super.dispose();
   }
 
@@ -36,7 +37,7 @@ class _EmployeeFutureScreenState extends State<EmployeeFutureScreen> {
         centerTitle: true,
       ),
       body: FutureBuilder<List<EmployeeData>>(
-          future: _db.getEmployees(),
+          future: Provider.of<AppDb>(context).getEmployees(),
           builder: (context, snapshot) {
             final List<EmployeeData>? employees = snapshot.data;
 
