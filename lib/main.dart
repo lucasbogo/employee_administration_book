@@ -4,18 +4,26 @@ import 'package:employee_book/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'notifiers/employee_change_notifier.dart';
+
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider<AppDb>(
-          create: (_) => AppDb(),
-          dispose: (_, db) => db.close(),
-        ),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(MultiProvider(
+    providers: [
+      Provider.value(value: AppDb()),
+      ChangeNotifierProxyProvider<AppDb, EmployeeChangeNotifier>(
+        create: (context) => EmployeeChangeNotifier(),
+        update: (context, db, notifier) => notifier!
+          ..initAppDb(db)
+          ..getEmployeeFuture(),
+      ),
+      //ChangeNotifierProxyProvider<AppDb, EmployeeAddressChangeNotifier>(
+      //  create: (context) => EmployeeAddressChangeNotifier(),
+      //  update: (context, appDb, notifier) => notifier!..initAppDb(appDb),
+      //  lazy: true,
+      //)
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
