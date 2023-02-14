@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../data/local/db/app_db.dart';
 import '../widgets/custom_text_form_field.dart';
@@ -19,7 +20,7 @@ class EditEmployeeScreen extends StatefulWidget {
 
 class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   final _formKey = GlobalKey<FormState>();
-  late AppDb _db;
+  // late AppDb _db; // created singleton in main.dart. no need to create heres
   late EmployeeData _employeeData;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -32,13 +33,13 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   void initState() {
     super.initState();
 
-    _db = AppDb();
+    // _db = AppDb(); // created singleton in main.dart. no need to create here
     getEmployee();
   }
 
   @override
   void dispose() {
-    _db.close();
+    // _db.close(); // created singleton in main.dart. no need to create here
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();
@@ -156,7 +157,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
         phone: drift.Value(_phoneController.text),
         dateOfBirth: drift.Value(_dateOfBirth!),
       );
-      _db.updateEmployee(entity).then((value) =>
+      Provider.of<AppDb>(context).updateEmployee(entity).then((value) =>
           ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
             backgroundColor: Colors.green,
             content: const Text(
