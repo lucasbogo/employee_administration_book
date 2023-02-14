@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart' as drift;
+import 'package:employee_book/notifiers/employee_change_notifier.dart';
 import 'package:employee_book/widgets/custom_date_picker_form_field.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -19,7 +20,7 @@ class AddEmployeeScreen extends StatefulWidget {
 
 class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   final _formKey = GlobalKey<FormState>();
-  late AppDb _db;
+  // late AppDb _db;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -116,22 +117,22 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   Future<void> pickDateOfBirth(BuildContext context) async {
     final initialDate = DateTime.now();
     final newDate = await showDatePicker(
-        context: context,
-        initialDate: _dateOfBirth ?? initialDate,
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2023));
-    builder:
-    (context, child) => Theme(
-        data: ThemeData.light().copyWith(
-          colorScheme: ColorScheme.light(
-            primary: Colors.blue,
-            onPrimary: Colors.white,
-            surface: Colors.blue,
-            onSurface: Colors.black,
+      context: context,
+      initialDate: _dateOfBirth ?? initialDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2023),
+      builder: (context, child) => Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Colors.blue,
+              onPrimary: Colors.white,
+              surface: Colors.blue,
+              onSurface: Colors.black,
+            ),
+            dialogBackgroundColor: Colors.white,
           ),
-          dialogBackgroundColor: Colors.white,
-        ),
-        child: child ?? const Text(''));
+          child: child ?? const Text('')),
+    );
     if (newDate == null) return;
     setState(() {
       _dateOfBirth = newDate;
@@ -151,24 +152,27 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         phone: drift.Value(_phoneController.text),
         dateOfBirth: drift.Value(_dateOfBirth!),
       );
-      Provider.of<AppDb>(context, listen: false).insertEmployee(entity).then(
-          (value) =>
-              ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
-                backgroundColor: Colors.green,
-                content: const Text(
-                  'Funcionário adicionado com sucesso',
-                  style: TextStyle(color: Colors.white),
-                ),
-                actions: [
-                  TextButton(
-                      onPressed: () => ScaffoldMessenger.of(context)
-                          .hideCurrentMaterialBanner(),
-                      child: const Text(
-                        'Fechar',
-                        style: TextStyle(color: Colors.white),
-                      ))
-                ],
-              )));
+
+      context.read<EmployeeChangeNotifier>().createEmployee(entity);
     }
+  }
+
+  void providerListener() {
+    ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+      backgroundColor: Colors.green,
+      content: const Text(
+        'Funcionário adicionado com sucesso',
+        style: TextStyle(color: Colors.white),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () =>
+                ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+            child: const Text(
+              'Fechar',
+              style: TextStyle(color: Colors.white),
+            ))
+      ],
+    ));
   }
 }

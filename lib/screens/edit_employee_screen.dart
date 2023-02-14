@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:employee_book/widgets/custom_date_picker_form_field.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
+import '../notifiers/employee_change_notifier.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -28,13 +28,16 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
   DateTime? _dateOfBirth;
+  late EmployeeChangeNotifier _employeeChangeNotifier;
 
   @override
   void initState() {
     super.initState();
+    _employeeChangeNotifier =
+        Provider.of<EmployeeChangeNotifier>(context, listen: false);
 
     // _db = AppDb(); // created singleton in main.dart. no need to create here
-    getEmployee();
+    // getEmployee();
   }
 
   @override
@@ -71,42 +74,46 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            CustomTextFormField(
-              controller: _firstNameController,
-              txtLable: 'Nome',
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            CustomTextFormField(
-              controller: _lastNameController,
-              txtLable: 'Sobrenome',
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            CustomTextFormField(
-              controller: _emailController,
-              txtLable: 'Email',
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            CustomTextFormField(
-              controller: _phoneController,
-              txtLable: 'Phone',
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            CustomDatePickerFormField(
-                controller: _dateOfBirthController,
-                txtLable: 'Data de Nascimento',
-                callback: () {
-                  pickDateOfBirth(context);
-                }),
-            const SizedBox(
-              height: 8.0,
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  CustomTextFormField(
+                    controller: _firstNameController,
+                    txtLable: 'Nome',
+                  ),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  CustomTextFormField(
+                    controller: _lastNameController,
+                    txtLable: 'Sobrenome',
+                  ),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  CustomTextFormField(
+                    controller: _emailController,
+                    txtLable: 'Email',
+                  ),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  CustomTextFormField(
+                    controller: _phoneController,
+                    txtLable: 'Phone',
+                  ),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  CustomDatePickerFormField(
+                      controller: _dateOfBirthController,
+                      txtLable: 'Data de Nascimento',
+                      callback: () {
+                        pickDateOfBirth(context);
+                      })
+                ],
+              ),
             ),
           ],
         ),
@@ -117,23 +124,25 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   Future<void> pickDateOfBirth(BuildContext context) async {
     final initialDate = DateTime.now();
     final newDate = await showDatePicker(
-        context: context,
-        initialDate: _dateOfBirth ?? initialDate,
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2100));
-    builder:
-    (context, child) => Theme(
-        data: ThemeData.light().copyWith(
-          colorScheme: ColorScheme.light(
-            primary: Colors.blue,
-            onPrimary: Colors.white,
-            surface: Colors.blue,
-            onSurface: Colors.black,
+      context: context,
+      initialDate: _dateOfBirth ?? initialDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2023),
+      builder: (context, child) => Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Colors.blue,
+              onPrimary: Colors.white,
+              surface: Colors.blue,
+              onSurface: Colors.black,
+            ),
+            dialogBackgroundColor: Colors.white,
           ),
-          dialogBackgroundColor: Colors.white,
-        ),
-        child: child ?? const Text(''));
-    if (newDate == null) return;
+          child: child ?? const Text('')),
+    );
+    if (newDate == null) {
+      return;
+    }
     setState(() {
       _dateOfBirth = newDate;
       String dob = DateFormat('dd/MM/yyyy').format(newDate);
@@ -153,46 +162,51 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
         phone: drift.Value(_phoneController.text),
         dateOfBirth: drift.Value(_dateOfBirth!),
       );
-      Provider.of<AppDb>(context, listen: false).updateEmployee(entity).then(
-          (value) =>
-              ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
-                backgroundColor: Colors.green,
-                content: const Text(
-                  'Funcionário atualizado com sucesso',
-                  style: TextStyle(color: Colors.white),
-                ),
-                actions: [
-                  TextButton(
-                      onPressed: () => ScaffoldMessenger.of(context)
-                          .hideCurrentMaterialBanner(),
-                      child: const Text(
-                        'Fechar',
-                        style: TextStyle(color: Colors.white),
-                      ))
-                ],
-              )));
+
+      context.read<EmployeeChangeNotifier>().updateEmployee(entity);
     }
   }
 
   void deleteEmployee() {
-    Provider.of<AppDb>(context, listen: false).deleteEmployee(widget.id).then(
-        (value) =>
-            ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
-              backgroundColor: Colors.red,
-              content: const Text(
-                'Funcionário excluído com sucesso',
-                style: TextStyle(color: Colors.white),
-              ),
-              actions: [
-                TextButton(
-                    onPressed: () => ScaffoldMessenger.of(context)
-                        .hideCurrentMaterialBanner(),
-                    child: const Text(
-                      'Fechar',
-                      style: TextStyle(color: Colors.white),
-                    ))
-              ],
-            )));
+    context.read<EmployeeChangeNotifier>().deleteEmployee(widget.id);
+  }
+
+  void listenDeleteProvider() {
+    ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+      backgroundColor: Colors.red,
+      content: const Text(
+        'Funcionário excluído com sucesso',
+        style: TextStyle(color: Colors.white),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () =>
+                ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+            child: const Text(
+              'Fechar',
+              style: TextStyle(color: Colors.white),
+            ))
+      ],
+    ));
+  }
+
+  void listenUpdateProvider() {
+    ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+      backgroundColor: Colors.green,
+      content: const Text(
+        'Funcionário atualizado com sucesso',
+        style: TextStyle(color: Colors.white),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () =>
+                ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+            child: const Text(
+              'Fechar',
+              style: TextStyle(color: Colors.white),
+            ))
+      ],
+    ));
   }
 
   Future<void> getEmployee() async {

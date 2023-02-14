@@ -8,4 +8,5 @@ class Employee extends Table {
   TextColumn get email => text().named('email')();
   TextColumn get phone => text().named('phone')();
   DateTimeColumn get dateOfBirth => dateTime().named('dateOfBirth')();
+  IntColumn get isActive => integer().named('is_active').nullable()();
 }

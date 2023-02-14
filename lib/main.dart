@@ -4,7 +4,7 @@ import 'package:employee_book/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'notifiers/employee_change_notifier.dart';
+import '../notifiers/employee_change_notifier.dart';
 
 void main() {
   runApp(MultiProvider(

@@ -1,6 +1,7 @@
-import 'package:employee_book/data/local/db/app_db.dart';
+// Description: This file contains the EmployeeChangeNotifier class which is used to notify the UI when the data changes.
+//import '../data/local/db/app_db.dart';
 import 'package:flutter/foundation.dart';
-import 'package:employee_book/data/local/entity/employee_entity.dart';
+import 'package:employee_book/data/local/db/app_db.dart';
 
 class EmployeeChangeNotifier extends ChangeNotifier {
   AppDb? _appDb;
@@ -47,7 +48,7 @@ class EmployeeChangeNotifier extends ChangeNotifier {
   void getEmployeeStream() {
     _isLoading = true;
     _appDb?.getEmployeeStream().listen((event) {
-      _employeeListFuture = event;
+      _employeeListStream = event;
     });
     _isLoading = false;
     notifyListeners();
@@ -56,62 +57,74 @@ class EmployeeChangeNotifier extends ChangeNotifier {
   void getEmployee(int id) {
     _appDb?.getEmployee(id).then((value) {
       _employeeData = value;
+      setIsActive(value.isActive == 1 ? true : false);
+      notifyListeners();
     }).onError((error, stackTrace) {
       _error = error.toString();
+      notifyListeners();
     });
-
-    void insertEmployee(EmployeeCompanion entity) {
-      _appDb?.insertEmployee(entity).then((value) {
-        _isAdded = value >= 1 ? true : false;
-      }).onError((error, stackTrace) {
-        _error = error.toString();
-      });
-      notifyListeners();
-    }
-
-    void updateEmployee(EmployeeCompanion entity) {
-      _appDb?.updateEmployee(entity).then((value) {
-        _isUpdated = true;
-      }).onError((error, stackTrace) {
-        _error = error.toString();
-      });
-      notifyListeners();
-    }
-
-    void deleteEmployee(int id) {
-      _appDb?.deleteEmployee(id).then((value) {
-        if (value == 0) {
-          _error = 'Não foi possível deletar o empregado  $id';
-        } else {
-          _isDeleted = true;
-        }
-        notifyListeners();
-      }).onError((error, stackTrace) {
-        _error = error.toString();
-        notifyListeners();
-      });
-    }
-
-    void setIsActive(bool value) {
-      _isActive = value;
-      notifyListeners();
-    }
-
-    void setIsUpdated(bool value) {
-      _isUpdated = value;
-      notifyListeners();
-    }
-
-    void setIsDeleted(bool value) {
-      _isDeleted = value;
-      notifyListeners();
-    }
-
-    void setErrorMsg(String value) {
-      _error = value;
-      notifyListeners();
-    }
   }
 
-  initAppDb(AppDb db) {}
+  void createEmployee(EmployeeCompanion entity) {
+    _appDb?.insertEmployee(entity).then((value) {
+      _isAdded = value >= 1 ? true : false;
+      notifyListeners();
+    }).onError((error, stackTrace) {
+      _error = error.toString();
+      notifyListeners();
+    });
+  }
+
+  //void insertEmployee(EmployeeCompanion entity) {
+  //  _appDb?.insertEmployee(entity).then((value) {
+  //    _isAdded = value >= 1 ? true : false;
+  //  }).onError((error, stackTrace) {
+  //    _error = error.toString();
+  //  });
+  //  notifyListeners();
+  //}
+
+  void updateEmployee(EmployeeCompanion entity) {
+    _appDb?.updateEmployee(entity).then((value) {
+      _isUpdated = value;
+      notifyListeners();
+    }).onError((error, stackTrace) {
+      _error = error.toString();
+      notifyListeners();
+    });
+  }
+
+  void deleteEmployee(int id) {
+    _appDb?.deleteEmployee(id).then((value) {
+      if (value == 0) {
+        _error = 'No record was found';
+      } else {
+        _isDeleted = true;
+      }
+      notifyListeners();
+    }).onError((error, stackTrace) {
+      _error = error.toString();
+      notifyListeners();
+    });
+  }
+
+  void setIsActive(bool value) {
+    _isActive = value;
+    notifyListeners();
+  }
+
+  void setIsUpdated(bool value) {
+    _isUpdated = value;
+    notifyListeners();
+  }
+
+  void setIsDeleted(bool value) {
+    _isDeleted = value;
+    notifyListeners();
+  }
+
+  void setErrorMsg(String value) {
+    _error = value;
+    notifyListeners();
+  }
 }

@@ -41,16 +41,16 @@ class AppDb extends _$AppDb {
 
   // Atualizar um empregado
   Future<bool> updateEmployee(EmployeeCompanion entity) async {
-    return await update(this.employee).replace(entity);
+    return await update(employee).replace(entity);
   }
 
   // Inserir um empregado
   Future<int> insertEmployee(EmployeeCompanion entity) async {
-    return await into(this.employee).insert(entity);
+    return await into(employee).insert(entity);
   }
 
   // Deletar um empregado
   Future<int> deleteEmployee(int id) async {
-    return await (delete(this.employee)..where((t) => t.id.equals(id))).go();
+    return await (delete(employee)..where((t) => t.id.equals(id))).go();
   }
 }
