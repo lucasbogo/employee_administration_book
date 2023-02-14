@@ -35,44 +35,43 @@ class _EmployeeStreamNotifierScreenState
 
   @override
   Widget build(BuildContext context) {
-    final employees =
-        context.watch<EmployeeChangeNotifier>().employeeListStream;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Funcionários stream'),
-        centerTitle: true,
-      ),
-      body: ListView.builder(
-        itemCount: employees.length,
-        itemBuilder: (context, index) {
-          final employee = employees[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, '/edit_employee',
-                  arguments: employee.id);
-            },
-            child: Card(
-              color: Colors.grey[200],
-              shape: const RoundedRectangleBorder(
-                side: BorderSide(
-                    color: Color.fromARGB(179, 55, 201, 193), width: 1),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(employee.id.toString()),
-                    Text(employee.firstName.toString()),
-                    Text(employee.lastName.toString()),
-                    Text(employee.email.toString()),
-                    Text(employee.phone.toString()),
-                    Text(employee.dateOfBirth.toString()),
-                  ],
+      body: Selector<EmployeeChangeNotifier, List<EmployeeData>>(
+        selector: (context, notifier) => notifier.employeeListStream,
+        builder: (context, employees, child) {
+          return ListView.builder(
+            itemCount: employees.length,
+            itemBuilder: (context, index) {
+              final employee = employees[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/edit_employee',
+                      arguments: employee.id);
+                },
+                child: Card(
+                  color: Colors.grey[200],
+                  shape: const RoundedRectangleBorder(
+                    side: BorderSide(
+                        color: Color.fromARGB(179, 55, 201, 193), width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(employee.id.toString()),
+                        Text(employee.firstName.toString()),
+                        Text(employee.lastName.toString()),
+                        Text(employee.email.toString()),
+                        Text(employee.phone.toString()),
+                        Text(employee.dateOfBirth.toString()),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),

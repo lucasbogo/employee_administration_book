@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:employee_book/widgets/custom_date_picker_form_field.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import '../notifiers/employee_change_notifier.dart';
 
 import 'package:flutter/material.dart';
@@ -29,6 +29,8 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   final TextEditingController _dateOfBirthController = TextEditingController();
   DateTime? _dateOfBirth;
   late EmployeeChangeNotifier _employeeChangeNotifier;
+  int _id = 0;
+  int isActive = 0;
 
   @override
   void initState() {
@@ -37,8 +39,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
         Provider.of<EmployeeChangeNotifier>(context, listen: false);
     _employeeChangeNotifier.addListener(providerListener); // added listener
 
-    // _db = AppDb(); // created singleton in main.dart. no need to create here
-    // getEmployee();
+    getEmployee();
   }
 
   @override
@@ -49,6 +50,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     _emailController.dispose();
     _phoneController.dispose();
     _dateOfBirthController.dispose();
+    _employeeChangeNotifier.removeListener(providerListener);
     super.dispose();
   }
 
@@ -84,28 +86,28 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                     txtLable: 'Nome',
                   ),
                   const SizedBox(
-                    height: 8.0,
+                    height: 2.0,
                   ),
                   CustomTextFormField(
                     controller: _lastNameController,
                     txtLable: 'Sobrenome',
                   ),
                   const SizedBox(
-                    height: 8.0,
+                    height: 2.0,
                   ),
                   CustomTextFormField(
                     controller: _emailController,
                     txtLable: 'Email',
                   ),
                   const SizedBox(
-                    height: 8.0,
+                    height: 2.0,
                   ),
                   CustomTextFormField(
                     controller: _phoneController,
                     txtLable: 'Phone',
                   ),
                   const SizedBox(
-                    height: 8.0,
+                    height: 2.0,
                   ),
                   CustomDatePickerFormField(
                       controller: _dateOfBirthController,
@@ -128,7 +130,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
       context: context,
       initialDate: _dateOfBirth ?? initialDate,
       firstDate: DateTime(1900),
-      lastDate: DateTime(2023),
+      lastDate: DateTime(2100),
       builder: (context, child) => Theme(
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light(
@@ -165,57 +167,52 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
       );
 
       context.read<EmployeeChangeNotifier>().updateEmployee(entity);
+      Navigator.popAndPushNamed(context, '/');
     }
   }
 
   void deleteEmployee() {
     context.read<EmployeeChangeNotifier>().deleteEmployee(widget.id);
+    Navigator.popAndPushNamed(context, '/');
   }
 
   void providerListener() {
     if (_employeeChangeNotifier.isUpdated) {
       listenUpdateProvider();
+      Navigator.popAndPushNamed(context, '/');
     } else if (_employeeChangeNotifier.isDeleted) {
       listenDeleteProvider();
+      Navigator.popAndPushNamed(context, '/');
     }
   }
 
   void listenDeleteProvider() {
-    ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+    // toast message
+    Fluttertoast.showToast(
+      msg: 'Funcionário deletado com sucesso',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
-      content: const Text(
-        'Funcionário excluído com sucesso',
-        style: TextStyle(color: Colors.white),
-      ),
-      actions: [
-        TextButton(
-            onPressed: () =>
-                ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-            child: const Text(
-              'Fechar',
-              style: TextStyle(color: Colors.white),
-            ))
-      ],
-    ));
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+    context.read<EmployeeChangeNotifier>().setIsDeleted(false);
   }
 
   void listenUpdateProvider() {
-    ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+    // toast message that that pops automatically
+    Fluttertoast.showToast(
+      msg: 'Funcionário atualizado com sucesso',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
       backgroundColor: Colors.green,
-      content: const Text(
-        'Funcionário atualizado com sucesso',
-        style: TextStyle(color: Colors.white),
-      ),
-      actions: [
-        TextButton(
-            onPressed: () =>
-                ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-            child: const Text(
-              'Fechar',
-              style: TextStyle(color: Colors.white),
-            ))
-      ],
-    ));
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+
+    context.read<EmployeeChangeNotifier>().setIsUpdated(false);
   }
 
   Future<void> getEmployee() async {
@@ -228,4 +225,28 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     _dateOfBirthController.text =
         _employeeData.dateOfBirth.toLocal().toString();
   }
+
+  //void showSuccessToast(String message) {
+  //  Fluttertoast.showToast(
+  //    msg: message,
+  //    toastLength: Toast.LENGTH_SHORT,
+  //    gravity: ToastGravity.BOTTOM,
+  //    timeInSecForIosWeb: 1,
+  //    backgroundColor: Colors.green,
+  //    textColor: Colors.white,
+  //    fontSize: 16.0,
+  //  );
+  //}
+
+  //void showErrorToast(String message) {
+  //  Fluttertoast.showToast(
+  //    msg: message,
+  //    toastLength: Toast.LENGTH_SHORT,
+  //    gravity: ToastGravity.BOTTOM,
+  //    timeInSecForIosWeb: 1,
+  //    backgroundColor: Colors.red,
+  //    textColor: Colors.white,
+  //    fontSize: 16.0,
+  //  );
+  //}
 }

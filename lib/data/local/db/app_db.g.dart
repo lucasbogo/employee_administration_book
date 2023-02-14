@@ -137,6 +137,8 @@ class EmployeeData extends DataClass implements Insertable<EmployeeData> {
       required this.email,
       required this.phone,
       required this.dateOfBirth});
+
+  get isActive => null;
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};

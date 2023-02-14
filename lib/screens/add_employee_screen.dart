@@ -3,6 +3,7 @@ import 'package:employee_book/notifiers/employee_change_notifier.dart';
 import 'package:employee_book/widgets/custom_date_picker_form_field.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -61,6 +62,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
               onPressed: () {
                 addEmployee();
               },
+              // add employee then go back to list
+
               icon: const Icon(Icons.save))
         ],
       ),
@@ -72,44 +75,40 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  Form(
-                      key: _formKey,
-                      child: Column(children: [
-                        CustomTextFormField(
-                          controller: _firstNameController,
-                          txtLable: 'Nome',
-                        ),
-                        const SizedBox(
-                          height: 8.0,
-                        ),
-                        CustomTextFormField(
-                          controller: _lastNameController,
-                          txtLable: 'Sobrenome',
-                        ),
-                        const SizedBox(
-                          height: 8.0,
-                        ),
-                        CustomTextFormField(
-                          controller: _emailController,
-                          txtLable: 'Email',
-                        ),
-                        const SizedBox(
-                          height: 8.0,
-                        ),
-                        CustomTextFormField(
-                          controller: _phoneController,
-                          txtLable: 'Phone',
-                        ),
-                        const SizedBox(
-                          height: 8.0,
-                        ),
-                        CustomDatePickerFormField(
-                            controller: _dateOfBirthController,
-                            txtLable: 'Data de Nascimento',
-                            callback: () {
-                              pickDateOfBirth(context);
-                            })
-                      ])),
+                  CustomTextFormField(
+                    controller: _firstNameController,
+                    txtLable: 'Nome',
+                  ),
+                  const SizedBox(
+                    height: 2.0,
+                  ),
+                  CustomTextFormField(
+                    controller: _lastNameController,
+                    txtLable: 'Sobrenome',
+                  ),
+                  const SizedBox(
+                    height: 2.0,
+                  ),
+                  CustomTextFormField(
+                    controller: _emailController,
+                    txtLable: 'Email',
+                  ),
+                  const SizedBox(
+                    height: 2.0,
+                  ),
+                  CustomTextFormField(
+                    controller: _phoneController,
+                    txtLable: 'Phone',
+                  ),
+                  const SizedBox(
+                    height: 2.0,
+                  ),
+                  CustomDatePickerFormField(
+                      controller: _dateOfBirthController,
+                      txtLable: 'Data de Nascimento',
+                      callback: () {
+                        pickDateOfBirth(context);
+                      })
                 ],
               ),
             ),
@@ -125,7 +124,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
       context: context,
       initialDate: _dateOfBirth ?? initialDate,
       firstDate: DateTime(1900),
-      lastDate: DateTime(2023),
+      lastDate: DateTime(2100),
       builder: (context, child) => Theme(
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light(
@@ -159,27 +158,20 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
       );
 
       context.read<EmployeeChangeNotifier>().createEmployee(entity);
+      Navigator.popAndPushNamed(context, '/');
     }
   }
 
   void providerListener() {
     if (_employeeChangeNotifier.isAdded) {
-      ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
-        backgroundColor: Colors.green,
-        content: const Text(
-          'Funcionário adicionado com sucesso',
-          style: TextStyle(color: Colors.white),
-        ),
-        actions: [
-          TextButton(
-              onPressed: () =>
-                  ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-              child: const Text(
-                'Fechar',
-                style: TextStyle(color: Colors.white),
-              ))
-        ],
-      ));
+      Fluttertoast.showToast(
+          msg: 'Funcionário adicionado com sucesso',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 }
