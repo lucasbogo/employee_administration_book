@@ -6,11 +6,14 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    Provider(
-      create: (context) =>
-          AppDb(), // Singleton to connect to database only once
-      child: MyApp(),
-      dispose: (context, AppDb db) => db.close(),
+    MultiProvider(
+      providers: [
+        Provider<AppDb>(
+          create: (_) => AppDb(),
+          dispose: (_, db) => db.close(),
+        ),
+      ],
+      child: const MyApp(),
     ),
   );
 }

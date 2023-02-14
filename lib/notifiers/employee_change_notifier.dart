@@ -17,6 +17,18 @@ class EmployeeChangeNotifier extends ChangeNotifier {
   EmployeeData? get employeeData => _employeeData;
   String _error = '';
   String get error => _error;
+  //int _added = 0;
+  //int get added => _added;
+  bool _isAdded = false;
+  bool get isAdded => _isAdded;
+  bool _isUpdated = false;
+  bool get isUpdated => _isUpdated;
+  bool _isDeleted = false;
+  bool get isDeleted => _isDeleted;
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  bool _isActive = false;
+  bool get isActive => _isActive;
 
   void getEmployeeFuture() {
     _appDb?.getEmployees().then((value) {
@@ -40,30 +52,57 @@ class EmployeeChangeNotifier extends ChangeNotifier {
     }).onError((error, stackTrace) {
       _error = error.toString();
     });
-   
 
-  void insertEmployee(EmployeeCompanion entity) {
-    _appDb?.insertEmployee(entity).then((value) {
-      getEmployeeStream();
-    }).onError((error, stackTrace) {
-      _error = error.toString();
-    });
-    notifyListeners();
-  }
+    void insertEmployee(EmployeeCompanion entity) {
+      _appDb?.insertEmployee(entity).then((value) {
+        _isAdded = value >= 1 ? true : false;
+      }).onError((error, stackTrace) {
+        _error = error.toString();
+      });
+      notifyListeners();
+    }
 
-  void updateEmployee(EmployeeCompanion entity) {
-    _appDb?.updateEmployee(entity).then((value) {
-      getEmployeeStream();
-    }).onError((error, stackTrace) {
-      _error = error.toString();
-    });
-  }
+    void updateEmployee(EmployeeCompanion entity) {
+      _appDb?.updateEmployee(entity).then((value) {
+        _isUpdated = true;
+      }).onError((error, stackTrace) {
+        _error = error.toString();
+      });
+      notifyListeners();
+    }
 
-  void deleteEmployee(int id) {
-    _appDb?.deleteEmployee(id).then((value) {
-      getEmployeeStream();
-    }).onError((error, stackTrace) {
-      _error = error.toString();
-    });
+    void deleteEmployee(int id) {
+      _appDb?.deleteEmployee(id).then((value) {
+        if (value == 0) {
+          _error = 'Não foi possível deletar o empregado  $id';
+        } else {
+          _isDeleted = true;
+        }
+        notifyListeners();
+      }).onError((error, stackTrace) {
+        _error = error.toString();
+        notifyListeners();
+      });
+    }
+
+    void setIsActive(bool value) {
+      _isActive = value;
+      notifyListeners();
+    }
+
+    void setIsUpdated(bool value) {
+      _isUpdated = value;
+      notifyListeners();
+    }
+
+    void setIsDeleted(bool value) {
+      _isDeleted = value;
+      notifyListeners();
+    }
+
+    void setErrorMsg(String value) {
+      _error = value;
+      notifyListeners();
+    }
   }
 }
