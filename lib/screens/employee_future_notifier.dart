@@ -4,16 +4,16 @@ import 'package:provider/provider.dart';
 import '../data/local/db/app_db.dart';
 import '../notifiers/employee_change_notifier.dart';
 
-class EmployeeFutureNotifierScreenScreenScreen extends StatefulWidget {
-  const EmployeeFutureNotifierScreenScreenScreen({Key? key}) : super(key: key);
+class EmployeeFutureNotifierScreen extends StatefulWidget {
+  const EmployeeFutureNotifierScreen({Key? key}) : super(key: key);
 
   @override
-  State<EmployeeFutureNotifierScreenScreenScreen> createState() =>
-      _EmployeeFutureNotifierScreenScreenScreenState();
+  State<EmployeeFutureNotifierScreen> createState() =>
+      _EmployeeFutureNotifierScreenState();
 }
 
-class _EmployeeFutureNotifierScreenScreenScreenState
-    extends State<EmployeeFutureNotifierScreenScreenScreen> {
+class _EmployeeFutureNotifierScreenState
+    extends State<EmployeeFutureNotifierScreen> {
   @override
   void initState() {
     super.initState();

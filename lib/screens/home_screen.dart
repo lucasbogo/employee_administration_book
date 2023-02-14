@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:employee_book/screens/employee_future_notifier.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
@@ -19,7 +20,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
   late AppDb _db;
-  final pages = [EmployeeFutureScreen(), EmployeeStreamScreen()];
+  final pages = [
+    EmployeeFutureScreen(),
+    EmployeeStreamScreen(),
+    EmployeeFutureNotifierScreen()
+  ];
 
   @override
   void initState() {
