@@ -33,10 +33,12 @@ class EmployeeChangeNotifier extends ChangeNotifier {
   void getEmployeeFuture() {
     _appDb?.getEmployees().then((value) {
       _employeeListFuture = value;
+      notifyListeners();
     }).onError((error, stackTrace) {
       _error = error.toString();
+      notifyListeners();
     });
-    notifyListeners();
+    //notifyListeners();
   }
 
   void getEmployeeStream() {
@@ -105,4 +107,6 @@ class EmployeeChangeNotifier extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  initAppDb(AppDb db) {}
 }
