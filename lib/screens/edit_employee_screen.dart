@@ -157,48 +157,51 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
         phone: drift.Value(_phoneController.text),
         dateOfBirth: drift.Value(_dateOfBirth!),
       );
-      Provider.of<AppDb>(context).updateEmployee(entity).then((value) =>
-          ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
-            backgroundColor: Colors.green,
-            content: const Text(
-              'Funcionário atualizado com sucesso',
-              style: TextStyle(color: Colors.white),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () =>
-                      ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-                  child: const Text(
-                    'Fechar',
-                    style: TextStyle(color: Colors.white),
-                  ))
-            ],
-          )));
+      Provider.of<AppDb>(context, listen: false).updateEmployee(entity).then(
+          (value) =>
+              ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+                backgroundColor: Colors.green,
+                content: const Text(
+                  'Funcionário atualizado com sucesso',
+                  style: TextStyle(color: Colors.white),
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () => ScaffoldMessenger.of(context)
+                          .hideCurrentMaterialBanner(),
+                      child: const Text(
+                        'Fechar',
+                        style: TextStyle(color: Colors.white),
+                      ))
+                ],
+              )));
     }
   }
 
   void deleteEmployee() {
-    Provider.of<AppDb>(context).deleteEmployee(widget.id).then((value) =>
-        ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
-          backgroundColor: Colors.red,
-          content: const Text(
-            'Funcionário excluído com sucesso',
-            style: TextStyle(color: Colors.white),
-          ),
-          actions: [
-            TextButton(
-                onPressed: () =>
-                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-                child: const Text(
-                  'Fechar',
-                  style: TextStyle(color: Colors.white),
-                ))
-          ],
-        )));
+    Provider.of<AppDb>(context, listen: false).deleteEmployee(widget.id).then(
+        (value) =>
+            ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+              backgroundColor: Colors.red,
+              content: const Text(
+                'Funcionário excluído com sucesso',
+                style: TextStyle(color: Colors.white),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () => ScaffoldMessenger.of(context)
+                        .hideCurrentMaterialBanner(),
+                    child: const Text(
+                      'Fechar',
+                      style: TextStyle(color: Colors.white),
+                    ))
+              ],
+            )));
   }
 
   Future<void> getEmployee() async {
-    _employeeData = await Provider.of<AppDb>(context).getEmployee(widget.id);
+    _employeeData =
+        await Provider.of<AppDb>(context, listen: false).getEmployee(widget.id);
     _firstNameController.text = _employeeData.firstName;
     _lastNameController.text = _employeeData.lastName;
     _emailController.text = _employeeData.email;

@@ -151,23 +151,24 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         phone: drift.Value(_phoneController.text),
         dateOfBirth: drift.Value(_dateOfBirth!),
       );
-      Provider.of<AppDb>(context).insertEmployee(entity).then((value) =>
-          ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
-            backgroundColor: Colors.green,
-            content: const Text(
-              'Funcionário adicionado com sucesso',
-              style: TextStyle(color: Colors.white),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () =>
-                      ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-                  child: const Text(
-                    'Fechar',
-                    style: TextStyle(color: Colors.white),
-                  ))
-            ],
-          )));
+      Provider.of<AppDb>(context, listen: false).insertEmployee(entity).then(
+          (value) =>
+              ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+                backgroundColor: Colors.green,
+                content: const Text(
+                  'Funcionário adicionado com sucesso',
+                  style: TextStyle(color: Colors.white),
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () => ScaffoldMessenger.of(context)
+                          .hideCurrentMaterialBanner(),
+                      child: const Text(
+                        'Fechar',
+                        style: TextStyle(color: Colors.white),
+                      ))
+                ],
+              )));
     }
   }
 }
