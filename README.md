@@ -29,7 +29,7 @@
 - Icon
 - Fluttertoast.showToast (invoked in the listener method)
 
-# O arquivo ```main.dart```é o principal O ponto de entrada da aplicação e contém o código para inicializar a aplicação e configurar os provedores.
+#### O arquivo ```main.dart```é o principal O ponto de entrada da aplicação e contém o código para inicializar a aplicação e configurar os provedores.
 
 A função ```main()``` cria um widget MultiProvider que fornece três provedores:
 
