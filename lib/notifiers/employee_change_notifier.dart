@@ -13,6 +13,8 @@ class EmployeeChangeNotifier extends ChangeNotifier {
   List<EmployeeData> get employeeListFuture => _employeeListFuture;
   List<EmployeeData> _employeeListStream = [];
   List<EmployeeData> get employeeListStream => _employeeListStream;
+  EmployeeData? _employeeData;
+  EmployeeData? get employeeData => _employeeData;
   String _error = '';
   String get error => _error;
 
@@ -32,12 +34,21 @@ class EmployeeChangeNotifier extends ChangeNotifier {
     });
   }
 
+  void getEmployee(int id) {
+    _appDb?.getEmployee(id).then((value) {
+      _employeeData = value;
+    }).onError((error, stackTrace) {
+      _error = error.toString();
+    });
+   
+
   void insertEmployee(EmployeeCompanion entity) {
     _appDb?.insertEmployee(entity).then((value) {
       getEmployeeStream();
     }).onError((error, stackTrace) {
       _error = error.toString();
     });
+    notifyListeners();
   }
 
   void updateEmployee(EmployeeCompanion entity) {
