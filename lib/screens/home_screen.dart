@@ -37,10 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Controle de Funcionários'),
-          centerTitle: true,
-        ),
         body: pages[index],
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),

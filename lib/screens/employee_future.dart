@@ -31,6 +31,10 @@ class _EmployeeFutureScreenState extends State<EmployeeFutureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Funcionários future'),
+        centerTitle: true,
+      ),
       body: FutureBuilder<List<EmployeeData>>(
           future: _db.getEmployees(),
           builder: (context, snapshot) {
