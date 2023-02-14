@@ -31,21 +31,26 @@ class EmployeeChangeNotifier extends ChangeNotifier {
   bool get isActive => _isActive;
 
   void getEmployeeFuture() {
+    _isLoading = true;
+
     _appDb?.getEmployees().then((value) {
       _employeeListFuture = value;
+      _isLoading = false;
       notifyListeners();
     }).onError((error, stackTrace) {
       _error = error.toString();
+      _isLoading = false;
       notifyListeners();
     });
-    //notifyListeners();
   }
 
   void getEmployeeStream() {
+    _isLoading = true;
     _appDb?.getEmployeeStream().listen((event) {
       _employeeListFuture = event;
-      notifyListeners();
     });
+    _isLoading = false;
+    notifyListeners();
   }
 
   void getEmployee(int id) {
