@@ -71,46 +71,42 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  CustomTextFormField(
-                    controller: _firstNameController,
-                    txtLable: 'Nome',
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  CustomTextFormField(
-                    controller: _lastNameController,
-                    txtLable: 'Sobrenome',
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  CustomTextFormField(
-                    controller: _emailController,
-                    txtLable: 'Email',
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  CustomTextFormField(
-                    controller: _phoneController,
-                    txtLable: 'Phone',
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  CustomDatePickerFormField(
-                      controller: _dateOfBirthController,
-                      txtLable: 'Data de Nascimento',
-                      callback: () {
-                        pickDateOfBirth(context);
-                      })
-                ],
-              ),
+            CustomTextFormField(
+              controller: _firstNameController,
+              txtLable: 'Nome',
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            CustomTextFormField(
+              controller: _lastNameController,
+              txtLable: 'Sobrenome',
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            CustomTextFormField(
+              controller: _emailController,
+              txtLable: 'Email',
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            CustomTextFormField(
+              controller: _phoneController,
+              txtLable: 'Phone',
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            CustomDatePickerFormField(
+                controller: _dateOfBirthController,
+                txtLable: 'Data de Nascimento',
+                callback: () {
+                  pickDateOfBirth(context);
+                }),
+            const SizedBox(
+              height: 8.0,
             ),
           ],
         ),
