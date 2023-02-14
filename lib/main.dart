@@ -1,9 +1,17 @@
+import 'package:employee_book/data/local/db/app_db.dart';
 import 'package:employee_book/routes/route_generator.dart';
 import 'package:employee_book/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    Provider(
+      create: (context) =>
+          AppDb(), // Singleton to connect to database only once
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
