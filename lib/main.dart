@@ -13,7 +13,7 @@ void main() {
       ChangeNotifierProxyProvider<AppDb, EmployeeChangeNotifier>(
         create: (context) => EmployeeChangeNotifier(),
         update: (context, db, notifier) => notifier!
-          ..initAppDb(db)
+          ..init(db)
           ..getEmployeeFuture(),
       ),
       //ChangeNotifierProxyProvider<AppDb, EmployeeAddressChangeNotifier>(
